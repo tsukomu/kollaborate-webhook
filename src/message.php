@@ -47,21 +47,35 @@ function linkList($event)
     return $links;
 }
 
-function commentMeta($event)
+function commentData($event)
 {
-    $meta = "";
-
-    $annotation = isset($event['has_annotation']) ? ":art: with an annotation" : null;
-    if ($annotation)
-        $meta .= $annotation;
-
-    $reply = isset($event['reply_to_user_name']) ? ":arrow_right_hook: in reply to " . bold(decode($event['reply_to_user_name'])) : null;
-    if ($reply)
-        $meta .= ($meta ? '\n' : '') . $reply;
-
-    return $meta;
+    return implode(n(1), array_filter(array(
+        annotation($event),
+        reply($event),
+        bold(decode($event['user_name'])) . " wrote:",
+        blockquote(commentText($event)),
+    )));
 }
 
+function annotation($event)
+{
+    return  isset($event['has_annotation']) ? ":art: with an annotation" : null;
+}
+
+function commentMeta($event)
+{
+    return "";
+}
+
+function reply($event)
+{
+    return isset($event['reply_to_user_name']) ? ":arrow_right_hook: in reply to " . bold(decode($event['reply_to_user_name'])) : null;
+}
+
+function timecode($event)
+{
+    return isset($event['timecode']) ? bold($event['timecode']) : "";
+}
 
 function now()
 {
@@ -74,6 +88,7 @@ function now()
 // Returns the public link to the video if available or the link used
 function shareLink($event, string $fallback  = ""): string
 {
+    // If link_id isn't set, this is an admin using the real link
     if (!isset($event["link_id"]))
         return $fallback;
     if (isset($event["file_id"]))
@@ -81,7 +96,18 @@ function shareLink($event, string $fallback  = ""): string
     return "https://www.kollaborate.tv/link?id=" . $event['link_id'];
 }
 
+function videoLink($event)
+{
+    return "https://www.kollaborate.tv/player?id=" . $event['file_id'];
+}
+
 function thumbnail($event)
 {
     return isset($event['icon']) ? "https://www.kollaborate.tv/" . $event['icon'] : "";
+}
+
+
+function commentText($event)
+{
+    return mb_strimwidth(decode($event["comment"] ?? ""), 0, 256, "...");
 }

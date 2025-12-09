@@ -26,3 +26,8 @@ function h($level = 1, $string = "")
         $heading .= " " . $string;
     return $heading;
 }
+
+function blockquote($string = "")
+{
+    return ">>> " . $string;
+}

@@ -20,7 +20,7 @@ file_log('WEBHOOK: I AM RUNNING ' . date(DATE_RFC2822));
 // Check that the server issued a signature in the headers
 // Kollab frequently doesn't send the signature so comment out security if necessary.
 $headers = getallheaders();
-$signature = $headers['X-Kollab-Signature'];
+$signature = $headers['X-Kollab-Signature'] ?? false;
 file_log('WEBHOOK: GOT SIGNATURE');
 // if (!$signature) {
 //     file_log('Error: no signature received by server. Every message must have a signature.');
@@ -54,19 +54,15 @@ if (isset($json['challenge'])) {
     foreach ($json as $event) {
         $event = (array) $event;
         // uncomment next line to output each event to the error log because there are no docs
-        file_log('WEBHOOK: $event ' . print_r($event, true));
-        switch ($event['type']) {
-            case 'comment-new':
-                $messageData = publicWebhook($event);
-                sendDiscordMessage($messageData, $public_webhook);
-            case 'file-view':
-            case 'file-upload':
-                $messageData = logWebhook($event);
-                sendDiscordMessage($messageData, $logging_webhook);
-                break;
-            default:
-                break;
-        }
+        // file_log('WEBHOOK: $event ' . print_r($event, true));
+        $publicMessage = publicWebhook($event);
+        file_log($publicMessage);
+        if ($publicMessage)
+            sendDiscordMessage($publicMessage, $public_webhook);
+        $privateMessage = logWebhook($event);
+        file_log($privateMessage);
+        if ($privateMessage)
+            sendDiscordMessage($privateMessage, $logging_webhook);
     }
     exit;
 }

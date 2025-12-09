@@ -8,43 +8,65 @@ include_once __DIR__ . "/../src/message.php";
 
 function logWebhook($event)
 {
-    $ip = bold("IP: ");
-    if (isset($event['ip_address']))
-        $ip .= $event['ip_address'];
-    else
-        $ip .= "N/A";
-
-    $decodedComment = mb_strimwidth(decode($event["comment"]), 0, 256, "...");
-    $comment_meta = commentMeta($event);
-
-    // We do a little conditional joining
-    $comment_data = isset($event['timecode']) ? bold($event['timecode']) : "";
-    if ($comment_meta)
-        $comment_data .= n(1) . $comment_meta;
-    if ($decodedComment)
-        $comment_data .= n(1) . ">>> " . $decodedComment;
-
-    $user = decode($event['user_name'] ?? "None");
-
     // The real (admin) link
-    $vidlink = "https://www.kollaborate.tv/player?id=" . $event['file_id'];
+    $vidlink = videoLink($event);
     // The share link used, if any
-    $linkUsed = "Link used: " . shareLink($event, "N/A");
+    $shareLink = shareLink($event, "N/A");
 
-    return [
-        // The message itself - for logging
-        // "content" => "",
+    $event_data = implode(n(1), array_filter(array(
+        h(2, hyperlink(decode($event['title']), $vidlink)),
+        bold("Parent path: ") . $event['parent_path'] ?? "N/A",
+        bold("Event type: ") . $event['type'] ?? "null",
+        bold("Share link: ") . $shareLink,
+        bold("Username: ") . decode($event['user_name'] ?? "N/A"),
+        bold("IP: ") . $event['ip'] ?? "N/A",
+    )));
 
-        "embeds" => [
-            [
-                "timestamp" => now(),
+    switch ($event['type']) {
+        case 'comment-new':
+            return [
+                "embeds" => [
+                    [
+                        "timestamp" => now(),
+                        "color" => color($event),
+                        "thumbnail" => ["url" => thumbnail($event)],
+                        "description" => $event_data . n(2) . commentData($event),
+                        "fields" => [
+                            [
+                                "name" => $event['timecode'],
+                                "value" => "",
+                                "inline" => false
+                            ],
+                        ]
+                    ]
 
-                "color" => color($event),
-
-                "thumbnail" => ["url" => thumbnail($event)],
-
-                "description" => h(2, hyperlink(decode($event['title']), $vidlink)) . n(1) . h(3, $event['type']) . n(1) . $event['parent_path'] . n(1) . bold("Username: ") . $user . n(1) . $ip . n(1) . $linkUsed . n(2) . $comment_data,
-            ]
-        ]
-    ];
+                ]
+            ];
+        case 'file-view':
+        case 'file-upload':
+            return [
+                "embeds" => [
+                    [
+                        "timestamp" => now(),
+                        "color" => color($event),
+                        "thumbnail" => ["url" => thumbnail($event)],
+                        "description" => $event_data,
+                    ]
+                ]
+            ];
+        default:
+            if (isset($event['link_title'])) {
+                $is_video = $event['file_type'] == 1;
+                return [
+                    "content" => "A new link has been created: " . hyperlink($event['link_title'], $shareLink),
+                    "embeds" => [
+                        "timestamp" => now(),
+                        "color" => color($event),
+                        "thumbnail" => ["url" => thumbnail($event)],
+                        "description" => $event_data,
+                    ]
+                ];
+            }
+            return false;
+    }
 }
