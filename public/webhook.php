@@ -15,7 +15,7 @@ include_once __DIR__ . "/../src/message.php";
 include_once __DIR__ . "/log_message.php";
 include_once __DIR__ . "/public_message.php";
 
-file_log('WEBHOOK: I AM RUNNING');
+file_log('WEBHOOK: I AM RUNNING ' . date(DATE_RFC2822));
 
 // Check that the server issued a signature in the headers
 // Kollab frequently doesn't send the signature so comment out security if necessary.

@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * DISCORD SPECIFIC FUNCTIONALITY
+ */
+
+// Sends the message object to Discords API
 function sendDiscordMessage($messageData, $url)
 {
     try {

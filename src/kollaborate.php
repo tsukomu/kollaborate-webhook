@@ -1,4 +1,8 @@
 <?php
+/*
+ * KOLLABORATE SPECIFIC FUNCTIONALITY
+ */
+
 // Check if $string is base64 encoded and decode it. Otherwise return original string.
 // Thanks Kollaborate for randomly encoding some fields, sometimes
 function decode($string): string

@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * SHARED $event (Kollaborate) to $message (Discord) UTILITIES
+ */
+
 // Transform Kollaborate color id to decimal color for Discord
 function color($event)
 {

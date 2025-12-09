@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * MARKDOWN FORMATTING FUNCTIONS
+ */
+
 function n($times = 1)
 {
     return str_repeat("\n", $times);
