@@ -13,7 +13,7 @@ sudo snap install --classic certbot
 git clone https://github.com/tsukomu/kollaborate-webhook.git webhook
 ```
 
-You must put secrets.php at the root of this repo:
+You must put environment.php at the root of this repo:
 
 ```php
 <?php
@@ -35,6 +35,16 @@ $secret_key = "";
 $log_to_file = false;
 // File to log to.
 $log_file = "/tmp/webhook.log";
+
+// The links posted at the bottom of every public webhook message
+function linkList($event)
+{
+    return implode(" **|** ", array(
+        hyperlink("Link 1", "https://example.com"),
+        hyperlink("Link 2", "https://example.com"),
+        hyperlink("Link 3", "https://example.com"),
+    ));
+}
 ```
 
 # Nginx configuration

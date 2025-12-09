@@ -6,7 +6,7 @@
 
 function file_log($log_message)
 {
-    // Get settings from secrets.php
+    // Get settings from environment.php
     global $log_to_file, $log_file;
 
     // Ensure message is a string

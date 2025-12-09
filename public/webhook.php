@@ -1,7 +1,7 @@
 <?php
 
 // import the secret variables
-include __DIR__ . "/../secrets.php";
+include __DIR__ . "/../environment.php";
 global $public_webhook, $logging_webhook, $secret_key;
 
 // Functions

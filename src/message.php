@@ -36,17 +36,6 @@ function color($event)
     }
 }
 
-// This adds links to the message
-function linkList($event)
-{
-    $sep = " **|** ";
-    $kFolder = hyperlink("RICE Videos", "https://khat.us");
-    $entries = hyperlink("Vid Info Sheet", "https://khat.us");
-    $cws = hyperlink("CW & VPR Doc", "https://khat.us");
-    $links = join($sep, [$kFolder, $entries, $cws]);
-    return $links;
-}
-
 function commentData($event)
 {
     return implode(n(1), array_filter(array(
