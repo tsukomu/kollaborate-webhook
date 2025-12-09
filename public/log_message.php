@@ -12,6 +12,8 @@ function logWebhook($event)
     $vidlink = videoLink($event);
     // The share link used, if any
     $shareLink = shareLink($event, "N/A");
+    // The actual timestamp from Kollab
+    $timestamp = discordTimestamp($event['timestamp']);
 
     $event_data = implode(n(1), array_filter(array(
         h(2, hyperlink(decode($event['title']), $vidlink)),
@@ -27,7 +29,7 @@ function logWebhook($event)
             return [
                 "embeds" => [
                     [
-                        "timestamp" => now(),
+                        "timestamp" => $timestamp,
                         "color" => color($event),
                         "thumbnail" => ["url" => thumbnail($event)],
                         "description" => $event_data . n(2) . commentData($event),
@@ -47,7 +49,7 @@ function logWebhook($event)
             return [
                 "embeds" => [
                     [
-                        "timestamp" => now(),
+                        "timestamp" => $timestamp,
                         "color" => color($event),
                         "thumbnail" => ["url" => thumbnail($event)],
                         "description" => $event_data,
@@ -57,13 +59,15 @@ function logWebhook($event)
         default:
             if (isset($event['link_title'])) {
                 $is_video = $event['file_type'] == 1;
+
                 return [
                     "content" => "A new link has been created: " . hyperlink($event['link_title'], $shareLink),
                     "embeds" => [
-                        "timestamp" => now(),
-                        "color" => color($event),
-                        "thumbnail" => ["url" => thumbnail($event)],
-                        "description" => $event_data,
+                        [
+                            "timestamp" => $timestamp,
+                            "thumbnail" => ["url" => thumbnail($event)],
+                            "description" => $event_data,
+                        ]
                     ]
                 ];
             }

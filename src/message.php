@@ -77,12 +77,14 @@ function timecode($event)
     return isset($event['timecode']) ? bold($event['timecode']) : "";
 }
 
+function discordTimestamp($timestamp)
+{
+    return date("c", $timestamp);
+}
+
 function now()
 {
-    // Timestamp of embed must be formatted as ISO8601
-    // without timestamp !!!
-    // return preg_replace('/\+\d\d:\d\d$/i', "", date("c", strtotime("now")));
-    return date("c", strtotime("now"));
+    return discordTimestamp(strtotime("now"));
 }
 
 // Returns the public link to the video if available or the link used

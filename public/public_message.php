@@ -10,10 +10,13 @@ function publicWebhook($event)
 {
     if ($event['type'] != 'comment-new') return false;
 
+    // The actual timestamp from Kollab
+    $timestamp = discordTimestamp($event['timestamp']);
+
     return [
         "embeds" => [
             [
-                "timestamp" => now(),
+                "timestamp" => $timestamp,
                 "color" => color($event),
                 "thumbnail" => ["url" => thumbnail($event)],
                 "title" => decode($event['title']),
@@ -32,13 +35,13 @@ function fields($event)
     if (isset($event['timecode'])) {
         $fields[] = [
             "name" => $event['timecode'],
-            "value" => $event['timecode'],
+            "value" => "",
             "inline" => false
         ];
     }
 
     $fields[] = [
-        "name" => " ",
+        "name" => "",
         "value" => linkList($event),
         "inline" => false
     ];
