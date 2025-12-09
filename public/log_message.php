@@ -35,7 +35,7 @@ function logWebhook($event)
                         "description" => $event_data . n(2) . commentData($event),
                         "fields" => [
                             [
-                                "name" => $event['timecode'],
+                                "name" => $event['timecode'] ?? "no timecode??",
                                 "value" => "",
                                 "inline" => false
                             ],
