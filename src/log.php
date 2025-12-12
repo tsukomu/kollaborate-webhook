@@ -4,10 +4,12 @@
  * LOGGING FUNCTIONALITY
  */
 
-function file_log($log_message)
+function file_log($log_message, $level = 1)
 {
     // Get settings from environment.php
-    global $log_to_file, $log_file;
+    global $log_to_file, $log_file, $log_level;
+
+    if ($log_level < $level) return;
 
     // Ensure message is a string
     if (!is_string($log_message)) {

@@ -7,6 +7,7 @@
 // Thanks Kollaborate for randomly encoding some fields, sometimes
 function decode($string): string
 {
+    if (!isset($string)) return "no value to decode";
     $start = substr($string, 0, 7);
     if (strcmp($start, "base64:") == 0) {
         $decoded = base64_decode(substr($string, 7));
@@ -35,6 +36,7 @@ function verifyKollaborateSignature($message, $signature)
 function sendResponseToServer($array)
 {
     global $secret_key;
+    file_log('WEBHOOK: SOLVING KOLLABORATE VERIFICATION CHALLENGE');
 
     // JSON encode
     $output = json_encode($array);
@@ -44,6 +46,7 @@ function sendResponseToServer($array)
 
     header("X-Kollab-Signature: sha1=$hash");
 
+    file_log('WEBHOOK: RESPONDING WITH VERIFICATION CHALLENGE RESULT');
     echo $output;
     flush();
 }

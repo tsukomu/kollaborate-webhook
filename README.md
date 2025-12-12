@@ -35,6 +35,11 @@ $secret_key = "";
 $log_to_file = false;
 // File to log to.
 $log_file = "/tmp/webhook.log";
+// Logging level. Currently there are two levels ERROR (0) and INFO(1)
+// Set to 1 to log information (and errors)
+// Set to 0 to only log errors
+// Set to -1 to log nothing
+$log_level = 1;
 
 // The links posted at the bottom of every public webhook message
 function linkList($event)

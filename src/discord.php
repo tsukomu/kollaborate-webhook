@@ -25,6 +25,7 @@ function sendDiscordMessage($messageData, $url)
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         // curl_setopt($curl, CURLOPT_STDERR, $out);
 
+        file_log("WEBHOOK: SENDING DISCORD MESSAGE");
         $response = curl_exec($curl);
 
         // fclose($out);
@@ -33,7 +34,7 @@ function sendDiscordMessage($messageData, $url)
         file_log("WEBHOOK: DISCORD RESPONSE");
         file_log($response);
     } catch (Throwable $th) {
-        file_log("WEBHOOK: sendDiscordMessage ERROR");
+        file_log("WEBHOOK: sendDiscordMessage ERROR", 0);
         file_log($th);
     }
 }

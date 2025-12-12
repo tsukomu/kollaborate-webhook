@@ -8,6 +8,7 @@ include_once __DIR__ . "/../src/message.php";
 
 function publicWebhook($event)
 {
+    if (!isset($event['type'])) return false;
     if ($event['type'] != 'comment-new') return false;
 
     // The actual timestamp from Kollab

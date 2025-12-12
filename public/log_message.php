@@ -8,6 +8,7 @@ include_once __DIR__ . "/../src/message.php";
 
 function logWebhook($event)
 {
+    file_log("WEBHOOK: BUILDING LOG MESSAGE");
     // The real (admin) link
     $vidlink = videoLink($event);
     // The share link used, if any
@@ -17,15 +18,16 @@ function logWebhook($event)
 
     $event_data = implode(n(1), array_filter(array(
         h(2, hyperlink(decode($event['title']), $vidlink)),
-        bold("Parent path: ") . $event['parent_path'] ?? "N/A",
-        bold("Event type: ") . $event['type'] ?? "null",
+        bold("Parent path: ") . isset($event['parent_path']) ? $event['parent_path'] : "N/A",
+        bold("Event type: ") . isset($event['type']) ? $event['type'] : "null",
         bold("Share link: ") . $shareLink,
-        bold("Username: ") . decode($event['user_name'] ?? "N/A"),
-        bold("IP: ") . $event['ip'] ?? "N/A",
+        bold("Username: ") . decode($event['user_name']),
+        bold("IP: ") . isset($event['ip']) ? $event['ip'] : "N/A",
     )));
 
     switch ($event['type']) {
         case 'comment-new':
+            file_log("WEBHOOK: LOGGING comment-new EVENT");
             return [
                 "embeds" => [
                     [
@@ -35,7 +37,7 @@ function logWebhook($event)
                         "description" => $event_data . n(2) . commentData($event),
                         "fields" => [
                             [
-                                "name" => $event['timecode'] ?? "no timecode??",
+                                "name" => isset($event['timecode']) ? $event['timecode'] : "no timecode??",
                                 "value" => "",
                                 "inline" => false
                             ],
@@ -46,6 +48,7 @@ function logWebhook($event)
             ];
         case 'file-view':
         case 'file-upload':
+            file_log("WEBHOOK: LOGGING file-view OR file-upload EVENT");
             return [
                 "embeds" => [
                     [
@@ -57,11 +60,13 @@ function logWebhook($event)
                 ]
             ];
         default:
+            file_log("WEBHOOK: LOGGING null EVENT");
             if (isset($event['link_title'])) {
-                $is_video = $event['file_type'] == 1;
-
+                file_log("WEBHOOK: LOGGING new link creation");
+                // $is_video = $event['file_type'] == 1;
                 return [
-                    "content" => "A new link has been created: " . hyperlink($event['link_title'], $shareLink),
+                    "content" => "A new link has been created: "
+                        . hyperlink(isset($event['link_title']) ? $event['link_title'] : "no link?", $shareLink),
                     "embeds" => [
                         [
                             "timestamp" => $timestamp,

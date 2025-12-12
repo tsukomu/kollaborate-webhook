@@ -11,10 +11,10 @@ function color($event)
         case 'file-upload':
             return 16711680; // bright red for file uploads
         case 'comment-new':
-            $id = $event['color_id'];
-            if (!$id) {
+            if (!isset($event['color_id']) || !$event['color_id']) {
                 return 8421504; // gray for comments with no color set
             }
+            $id = $event['color_id'];
             $colors = [
                 8421504,    // 0 - no color or grey
                 8388608,    // 1 - red
@@ -48,12 +48,7 @@ function commentData($event)
 
 function annotation($event)
 {
-    return  isset($event['has_annotation']) ? ":art: with an annotation" : null;
-}
-
-function commentMeta($event)
-{
-    return "";
+    return isset($event['has_annotation']) ? ":art: with an annotation" : null;
 }
 
 function reply($event)
@@ -68,7 +63,9 @@ function timecode($event)
 
 function discordTimestamp($timestamp)
 {
-    return date("c", $timestamp);
+    if (isset($event['timestamp']))
+        return date("c", $timestamp);
+    return "";
 }
 
 function now()
@@ -89,6 +86,7 @@ function shareLink($event, string $fallback  = ""): string
 
 function videoLink($event)
 {
+    if (!isset($event['file_id'])) return "N/A";
     return "https://www.kollaborate.tv/player?id=" . $event['file_id'];
 }
 
