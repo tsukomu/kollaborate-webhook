@@ -10,6 +10,7 @@ function publicWebhook($event)
 {
     if (!isset($event['type'])) return false;
     if ($event['type'] != 'comment-new') return false;
+    file_log("WEBHOOK: BUILDING PUBLIC MESSAGE");
 
     // The actual timestamp from Kollab
     $timestamp = discordTimestamp($event['timestamp']);
