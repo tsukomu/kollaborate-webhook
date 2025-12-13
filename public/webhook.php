@@ -49,7 +49,7 @@ file_log('WEBHOOK: PARSED JSON ' . print_r($json, true));
 if (isset($json['challenge'])) {
     file_log('WEBHOOK: KOLLABORATE VERIFICATION CHALLENGE RECEIVED');
     $response = intval($json['challenge']) + 1;
-    sendResponseToServer(array('response' => $response));
+    sendResponseToServer(['response' => $response]);
     file_log('WEBHOOK: END');
     exit;
 } else {

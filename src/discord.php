@@ -12,7 +12,7 @@ function sendDiscordMessage($messageData, $url)
 
         $jsonData = json_encode($messageData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-type: application/json']);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_HEADER, 1);
@@ -26,6 +26,7 @@ function sendDiscordMessage($messageData, $url)
         // curl_setopt($curl, CURLOPT_STDERR, $out);
 
         file_log("WEBHOOK: SENDING DISCORD MESSAGE");
+        file_log($jsonData);
         $response = curl_exec($curl);
 
         // fclose($out);

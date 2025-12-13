@@ -7,7 +7,7 @@
 // Thanks Kollaborate for randomly encoding some fields, sometimes
 function decode($string): string
 {
-    if (!isset($string)) return "no value to decode";
+    if (!isset($string)) return "N/A";
     $start = substr($string, 0, 7);
     if (strcmp($start, "base64:") == 0) {
         $decoded = base64_decode(substr($string, 7));

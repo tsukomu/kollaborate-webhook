@@ -41,14 +41,37 @@ $log_file = "/tmp/webhook.log";
 // Set to -1 to log nothing
 $log_level = 1;
 
-// The links posted at the bottom of every public webhook message
-function linkList($event)
+// Link list settings
+function linkListComponents($event)
 {
-    return implode(" **|** ", array(
-        hyperlink("Link 1", "https://example.com"),
-        hyperlink("Link 2", "https://example.com"),
-        hyperlink("Link 3", "https://example.com"),
-    ));
+    return [
+        [
+            "type" => 1,
+            "components" => [
+                [
+                    "type" => 2,
+                    "style" => 5,
+                    "label" => "RICE Videos",
+                    "emoji" => ["name" => "📂"],
+                    "url" => "https://bentovid.com/",
+                ],
+                [
+                    "type" => 2,
+                    "style" => 5,
+                    "label" => "Vid Info Sheet",
+                    "emoji" => ["name" => "ℹ️"],
+                    "url" => "https://bentovid.com/",
+                ],
+                [
+                    "type" => 2,
+                    "style" => 5,
+                    "label" => "CW & VPR Doc",
+                    "emoji" => ["name" => "⚠️"],
+                    "url" => "https://bentovid.com/",
+                ],
+            ]
+        ]
+    ];
 }
 ```
 

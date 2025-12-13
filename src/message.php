@@ -36,14 +36,71 @@ function color($event)
     }
 }
 
-function commentData($event)
+function commentText($event)
 {
-    return implode(n(1), array_filter(array(
-        annotation($event),
+    return mb_strimwidth(decode($event["comment"] ?? ""), 0, 256, "...");
+}
+
+function commentContent($event)
+{
+    return implode(n(1), array_filter([
+        h(1, hyperlink(videoTitle($event), shareLink($event, ""))),
+        "New comment from " . username($event),
+        "### At " . timecode($event),
         reply($event),
-        bold(decode($event['user_name'])) . " wrote:",
-        blockquote(commentText($event)),
-    )));
+        annotation($event),
+    ]));
+}
+
+function username($event)
+{
+    return decode($event['user_name']);
+}
+
+function videoTitle($event)
+{
+    return decode($event['title']);
+}
+
+function commentEmbeds($event)
+{
+    // The actual timestamp when the comment was made on Kollaborate
+    $timestamp = discordTimestamp($event);
+
+    return [
+        [
+            "timestamp" => $timestamp,
+            "color" => color($event),
+            "author" => [
+                "name" => username($event)
+            ],
+            // "url" => shareLink($event),
+            "description" => commentDescription($event),
+            "footer" => [
+                "text" => "Comment left at " . timecode($event) . " on " .  videoTitle($event)
+            ]
+        ]
+    ];
+}
+
+function fileViewEmbeds($event)
+{
+    // The actual timestamp when the event happened on Kollaborate
+    $timestamp = discordTimestamp($event);
+    return [
+        [
+            "timestamp" => $timestamp,
+            "author" => [
+                "name" => username($event)
+            ],
+            // "url" => shareLink($event),
+        ]
+    ];
+}
+
+function commentDescription($event)
+{
+    return commentText($event);
 }
 
 function annotation($event)
@@ -58,19 +115,26 @@ function reply($event)
 
 function timecode($event)
 {
-    return isset($event['timecode']) ? bold($event['timecode']) : "";
+    return isset($event['timecode']) ? $event['timecode'] : "";
 }
 
-function discordTimestamp($timestamp)
+function discordTimestamp($event)
 {
     if (isset($event['timestamp']))
-        return date("c", $timestamp);
+        return date("c", $event['timestamp']);
     return "";
 }
 
 function now()
 {
-    return discordTimestamp(strtotime("now"));
+    return date("c", strtotime("now"));
+}
+
+function ip($event)
+{
+    if (isset($event['ip'])) return $event['ip'];
+    if (isset($event['ip_address'])) return $event['ip_address'];
+    return "N/A";
 }
 
 // Returns the public link to the video if available or the link used
@@ -93,10 +157,4 @@ function videoLink($event)
 function thumbnail($event)
 {
     return isset($event['icon']) ? "https://www.kollaborate.tv/" . $event['icon'] : "";
-}
-
-
-function commentText($event)
-{
-    return mb_strimwidth(decode($event["comment"] ?? ""), 0, 256, "...");
 }

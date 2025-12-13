@@ -16,64 +16,47 @@ function logWebhook($event)
     // The actual timestamp from Kollab
     $timestamp = discordTimestamp($event['timestamp']);
 
-    $event_data = implode(n(1), array_filter(array(
+    // Build the log data
+    $event_data = implode(n(1), array_filter([
         h(2, hyperlink(decode($event['title']), $vidlink)),
-        bold("Parent path: ") . isset($event['parent_path']) ? $event['parent_path'] : "N/A",
-        bold("Event type: ") . isset($event['type']) ? $event['type'] : "null",
+        bold("Event type: ") . (isset($event['type']) ? $event['type'] : "null"),
+        bold("Parent path: ") . (isset($event['parent_path']) ? $event['parent_path'] : "N/A"),
         bold("Share link: ") . $shareLink,
         bold("Username: ") . decode($event['user_name']),
-        bold("IP: ") . isset($event['ip']) ? $event['ip'] : "N/A",
-    )));
+        bold("IP: ") . ip($event),
+    ]));
 
     switch ($event['type']) {
         case 'comment-new':
             file_log("WEBHOOK: LOGGING comment-new EVENT");
             return [
-                "embeds" => [
-                    [
-                        "timestamp" => $timestamp,
-                        "color" => color($event),
-                        "thumbnail" => ["url" => thumbnail($event)],
-                        "description" => $event_data . n(2) . commentData($event),
-                        "fields" => [
-                            [
-                                "name" => isset($event['timecode']) ? $event['timecode'] : "no timecode??",
-                                "value" => "",
-                                "inline" => false
-                            ],
-                        ]
-                    ]
-
-                ]
+                "content" => implode(
+                    n(1),
+                    array_filter([
+                        $event_data,
+                        reply($event),
+                        annotation($event),
+                    ])
+                ),
+                "embeds" => commentEmbeds($event),
             ];
         case 'file-view':
         case 'file-upload':
             file_log("WEBHOOK: LOGGING file-view OR file-upload EVENT");
             return [
-                "embeds" => [
-                    [
-                        "timestamp" => $timestamp,
-                        "color" => color($event),
-                        "thumbnail" => ["url" => thumbnail($event)],
-                        "description" => $event_data,
-                    ]
-                ]
+                "content" => $event_data,
+                "embeds" => fileViewEmbeds($event),
             ];
         default:
             file_log("WEBHOOK: LOGGING null EVENT");
             if (isset($event['link_title'])) {
                 file_log("WEBHOOK: LOGGING new link creation");
+                $linkContent = "A new link has been created: "
+                    . hyperlink(isset($event['link_title']) ? $event['link_title'] : "NO LINK TITLE", $shareLink);
                 // $is_video = $event['file_type'] == 1;
                 return [
-                    "content" => "A new link has been created: "
-                        . hyperlink(isset($event['link_title']) ? $event['link_title'] : "no link?", $shareLink),
-                    "embeds" => [
-                        [
-                            "timestamp" => $timestamp,
-                            "thumbnail" => ["url" => thumbnail($event)],
-                            "description" => $event_data,
-                        ]
-                    ]
+                    "content" => $linkContent . n(1) . $event_data,
+                    "embeds" => fileViewEmbeds($event),
                 ];
             }
             return false;

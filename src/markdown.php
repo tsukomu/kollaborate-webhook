@@ -11,7 +11,14 @@ function n($times = 1)
 
 function hyperlink($display, $url)
 {
+    if (!$url) return $display;
     return "[" . $display . "](<" . $url . ">)";
+}
+
+function markdownTimestamp($event)
+{
+    if (!isset($event['timestamp'])) return "N/A";
+    return "<t:" . $event['timestamp'] . ":T>";
 }
 
 function bold($s)
