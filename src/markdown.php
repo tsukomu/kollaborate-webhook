@@ -15,6 +15,18 @@ function hyperlink($display, $url)
     return "[" . $display . "](<" . $url . ">)";
 }
 
+function inlineCode($string)
+{
+    if (!isset($string)) return "";
+    return "`" . $string . "`";
+}
+
+function codeBlock($string)
+{
+    if (!isset($string)) return "";
+    return "```\n" . $string . "\n```";
+}
+
 function markdownTimestamp($event)
 {
     if (!isset($event['timestamp'])) return "N/A";

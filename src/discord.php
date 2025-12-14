@@ -5,9 +5,12 @@
  */
 
 // Sends the message object to Discords API
-function sendDiscordMessage($messageData, $url)
+function sendDiscordMessage($messageData, $url, $withComponents = false)
 {
     try {
+        if ($withComponents) {
+            $url .= "?with_components=true";
+        }
         $curl = curl_init($url);
 
         $jsonData = json_encode($messageData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

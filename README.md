@@ -60,14 +60,14 @@ function linkListComponents($event)
                     "style" => 5,
                     "label" => "Vid Info Sheet",
                     "emoji" => ["name" => "ℹ️"],
-                    "url" => "https://bentovid.com/",
+                    "url" => "https://bentovid.com/sguides/",
                 ],
                 [
                     "type" => 2,
                     "style" => 5,
                     "label" => "CW & VPR Doc",
                     "emoji" => ["name" => "⚠️"],
-                    "url" => "https://bentovid.com/",
+                    "url" => "https://bentovid.com/kondate/",
                 ],
             ]
         ]

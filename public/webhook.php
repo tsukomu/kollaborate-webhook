@@ -60,7 +60,7 @@ if (isset($json['challenge'])) {
         $publicMessage = publicWebhook($event);
         file_log($publicMessage);
         if ($publicMessage)
-            sendDiscordMessage($publicMessage, $public_webhook);
+            sendDiscordMessage($publicMessage, $public_webhook, true);
         $privateMessage = logWebhook($event);
         file_log($privateMessage);
         if ($privateMessage)
