@@ -38,28 +38,16 @@ function color($event)
 
 function commentText($event)
 {
-    return mb_strimwidth(decode($event["comment"] ?? ""), 0, 256, "...");
+    global $comment_max_length;
+    return mb_strimwidth(decode($event["comment"] ?? ""), 0, $comment_max_length, "...");
 }
 
 function commentContent($event)
 {
     return implode(n(1), array_filter([
-        h(1, hyperlink(videoTitle($event), shareLink($event, ""))),
-        "New comment from " . username($event),
-        "### At " . timecode($event),
-        reply($event),
+        h(2, hyperlink(videoTitle($event), shareLink($event, ""))),
         annotation($event),
     ]));
-}
-
-function username($event)
-{
-    return decode($event['user_name']);
-}
-
-function videoTitle($event)
-{
-    return decode($event['title']);
 }
 
 function commentEmbeds($event)
@@ -72,9 +60,8 @@ function commentEmbeds($event)
             "timestamp" => $timestamp,
             "color" => color($event),
             "author" => [
-                "name" => username($event)
+                "name" => "from " . username($event) . reply($event)
             ],
-            // "url" => shareLink($event),
             "description" => commentDescription($event),
             "footer" => [
                 "text" => "Comment left at " . timecode($event) . " on " .  videoTitle($event)
@@ -93,9 +80,18 @@ function fileViewEmbeds($event)
             "author" => [
                 "name" => username($event)
             ],
-            // "url" => shareLink($event),
         ]
     ];
+}
+
+function username($event)
+{
+    return decode($event['user_name']);
+}
+
+function videoTitle($event)
+{
+    return decode($event['title']);
 }
 
 function commentDescription($event)
@@ -105,12 +101,14 @@ function commentDescription($event)
 
 function annotation($event)
 {
-    return isset($event['has_annotation']) ? ":art: with an annotation" : null;
+    return isset($event['has_annotation']) ? ":art: with an annotation :paintbrush:" : null;
 }
 
 function reply($event)
 {
-    return isset($event['reply_to_user_name']) ? ":arrow_right_hook: in reply to " . bold(decode($event['reply_to_user_name'])) : null;
+    return isset($event['reply_to_user_name'])
+        ? " in reply to " . decode($event['reply_to_user_name'])
+        : null;
 }
 
 function timecode($event)

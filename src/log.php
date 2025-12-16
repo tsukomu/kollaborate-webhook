@@ -24,3 +24,16 @@ function file_log($log_message, $level = 1)
         error_log($log_message);
     }
 }
+
+function webhook_start()
+{
+    file_log('WEBHOOK: START '  . date(DATE_RFC2822));
+}
+
+function webhook_end(): never
+{
+    file_log('WEBHOOK: SUCCESS '  . date(DATE_RFC2822));
+    echo "OK";
+    flush();
+    exit;
+}

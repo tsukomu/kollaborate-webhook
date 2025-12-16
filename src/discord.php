@@ -29,14 +29,14 @@ function sendDiscordMessage($messageData, $url, $withComponents = false)
         // curl_setopt($curl, CURLOPT_STDERR, $out);
 
         file_log("WEBHOOK: SENDING DISCORD MESSAGE");
-        file_log($jsonData);
+        file_log($jsonData, 2);
         $response = curl_exec($curl);
 
         // fclose($out);
         // $debug = ob_get_clean();
         // file_log($debug);
-        file_log("WEBHOOK: DISCORD RESPONSE");
-        file_log($response);
+        file_log("WEBHOOK: DISCORD RESPONSE", 2);
+        file_log($response, 2);
     } catch (Throwable $th) {
         file_log("WEBHOOK: sendDiscordMessage ERROR", 0);
         file_log($th);

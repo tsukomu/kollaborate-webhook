@@ -50,3 +50,11 @@ function sendResponseToServer($array)
     echo $output;
     flush();
 }
+
+function handleChallenge($json)
+{
+    file_log('WEBHOOK: KOLLABORATE VERIFICATION CHALLENGE RECEIVED');
+    $response = intval($json['challenge']) + 1;
+    sendResponseToServer(['response' => $response]);
+    webhook_end();
+}
