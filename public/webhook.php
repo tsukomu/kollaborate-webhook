@@ -39,6 +39,9 @@ if (!isset($link_list_components[0]['components'])) {
     exit(1);
 }
 
+$message = file_get_contents('php://input');
+file_log("WEBHOOK: RAW REQUEST" . $message, 2);
+
 // Check X-Kollaborate-Signature is valid
 /* Anyone can send requests to the webhook, such is the 
  * nature of the internet. Only requests that have been
@@ -47,6 +50,8 @@ if (!isset($link_list_components[0]['components'])) {
 if ($kollaborate_has_fixed_their_shit) {
     // Get request headers
     $headers = apache_request_headers();
+    file_log("WEBHOOK: REQUEST HEADERS", 2);
+    file_log($headers, 2);
     if (!$headers) {
         file_log("Error: couldn't read request headers. This should only happen if your webserver does not support the apache_request_headers php function", 0);
         exit(1);
@@ -66,9 +71,6 @@ if ($kollaborate_has_fixed_their_shit) {
         exit;
     }
 }
-
-$message = file_get_contents('php://input');
-file_log("WEBHOOK: RAW REQUEST" . $message, 2);
 
 // Convert message to a JSON object
 $json = (array) json_decode($message);
