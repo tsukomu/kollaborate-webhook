@@ -33,7 +33,7 @@ $log_to_file = false;
  * The file needs to be writeable by www-data (or the user that runs your web server)
  */
 $log_file = "/tmp/webhook.log";
-/* Logging level. Currently there are two levels ERROR (0) and INFO(1)
+/* Logging level, controls how much logging you want.
  * Set to 2 to log everything
  * Set to 1 to log information (and errors)
  * Set to 0 to only log errors

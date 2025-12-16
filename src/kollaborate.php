@@ -45,7 +45,6 @@ function sendResponseToServer($array)
     $hash = hash_hmac('sha1', $output, $secret_key);
 
     header("X-Kollab-Signature: sha1=$hash");
-
     file_log('WEBHOOK: RESPONDING WITH VERIFICATION CHALLENGE RESULT');
     echo $output;
     flush();
@@ -56,5 +55,5 @@ function handleChallenge($json)
     file_log('WEBHOOK: KOLLABORATE VERIFICATION CHALLENGE RECEIVED');
     $response = intval($json['challenge']) + 1;
     sendResponseToServer(['response' => $response]);
-    webhook_end();
+    webhook_end(false);
 }
