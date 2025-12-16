@@ -13,7 +13,9 @@ sudo snap install --classic certbot
 git clone https://github.com/tsukomu/kollaborate-webhook.git webhook
 ```
 
-You must put environment.php at the root of this repo. Copy defaults.php and name the copy environment.php.environment.php is your personal settings. You can remove everything but the webhook URLs and $link_list_components if you do not want to change the defaults.
+You must put environment.php at the root of this repo. Copy defaults.php and name the copy environment.php. 
+
+environment.php is your personal settings. You can remove everything but the webhook URLs and $link_list_components if you do not want to change the defaults.
 
 # Nginx configuration
 
