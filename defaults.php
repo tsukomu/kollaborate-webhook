@@ -57,21 +57,21 @@ $link_list_components = [
                 "style" => 5,
                 "label" => "Kollaborate videos folder",
                 "emoji" => ["name" => "📂"],
-                "url" => "",
+                "url" => "https://kollaborate.tv/",
             ],
             [
                 "type" => 2,
                 "style" => 5,
                 "label" => "Contest information",
                 "emoji" => ["name" => "ℹ️"],
-                "url" => "",
+                "url" => "https://bentovid.com/",
             ],
             [
                 "type" => 2,
                 "style" => 5,
-                "label" => "Warning!!!",
+                "label" => "Kollaborate Webhook repository",
                 "emoji" => ["name" => "⚠️"],
-                "url" => "",
+                "url" => "https://github.com/tsukomu/kollaborate-webhook",
             ],
         ]
     ]

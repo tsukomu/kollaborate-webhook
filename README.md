@@ -57,3 +57,10 @@ certbot --nginx -d your.domain.com
 ```
 
 Certbot will change the Nginx configuration, this is fine.
+
+# Common components issues
+
+- Link buttons (style => 5) MUST contain a URL.
+- Link buttons (style => 5) MUST NOT contain the "custom_id" field.
+- Webhooks that send components must set the query parameter `?with_components=true`.
+  - Currently this is handled in the event loop in webhook.php, it's not meant to be configurable

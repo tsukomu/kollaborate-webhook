@@ -1,6 +1,6 @@
 <?php
 
-// import the secret variables
+// import the default and environment specific settings
 include_once __DIR__ . "/../defaults.php";
 include_once __DIR__ . "/../environment.php";
 global $public_webhook, $logging_webhook, $secret_key, $link_list_components;
@@ -88,16 +88,18 @@ foreach ($json as $event) {
     $event = (array) $event;
     file_log('WEBHOOK: $event ' . print_r($event, true), 2);
 
+    $publicMessageHasComponents = true;
     $publicMessage = publicWebhook($event);
-    file_log($publicMessage);
+    file_log($publicMessage, 2);
     if ($publicMessage) {
-        sendDiscordMessage($publicMessage, $public_webhook, true);
+        sendDiscordMessage($publicMessage, $public_webhook, $publicMessageHasComponents);
     }
 
+    $logMessageHasComponents = false;
     $privateMessage = logWebhook($event);
-    file_log($privateMessage);
+    file_log($privateMessage, 2);
     if ($privateMessage) {
-        sendDiscordMessage($privateMessage, $logging_webhook);
+        sendDiscordMessage($privateMessage, $logging_webhook, $logMessageHasComponents);
     }
 }
 
