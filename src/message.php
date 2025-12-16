@@ -101,7 +101,7 @@ function commentDescription($event)
 
 function annotation($event)
 {
-    return isset($event['has_annotation']) ? ":art: with an annotation :paintbrush:" : null;
+    return isset($event['has_annotation']) ? ":art: with an annotation" : null;
 }
 
 function reply($event)
