@@ -84,14 +84,28 @@ function fileViewEmbeds($event)
     ];
 }
 
-function username($event)
+function username($event, $fallback = "")
 {
+    if (!isset($event['user_name'])) return $fallback;
     return decode($event['user_name']);
 }
 
-function videoTitle($event)
+function videoTitle($event, $fallback = "")
 {
+    if (!isset($event['title'])) return $fallback;
     return decode($event['title']);
+}
+
+function eventType($event, $fallback = "")
+{
+    if (!isset($event['type'])) return $fallback;
+    return decode($event['type']);
+}
+
+function parentPath($event, $fallback = "")
+{
+    if (!isset($event['parent_path'])) return $fallback;
+    return decode($event['parent_path']);
 }
 
 function commentDescription($event)
@@ -113,7 +127,7 @@ function reply($event)
 
 function timecode($event)
 {
-    return isset($event['timecode']) ? $event['timecode'] : "";
+    return $event['timecode'] ?? "";
 }
 
 function discordTimestamp($event)

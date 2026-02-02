@@ -13,16 +13,14 @@ function logWebhook($event)
     $vidlink = videoLink($event);
     // The share link used, if any
     $shareLink = shareLink($event, "N/A");
-    // The actual timestamp from Kollab
-    $timestamp = discordTimestamp($event['timestamp']);
 
     // Build the log data
     $event_data = implode(n(1), array_filter([
-        h(2, hyperlink(decode($event['title']), $vidlink)),
-        bold("Event type: ") . (isset($event['type']) ? $event['type'] : "null"),
-        bold("Parent path: ") . (isset($event['parent_path']) ? $event['parent_path'] : "N/A"),
+        h(2, hyperlink(videoTitle($event), $vidlink)),
+        bold("Event type: ") . eventType($event, "N/A"),
+        bold("Parent path: ") . parentPath($event, "N/A"),
         bold("Share link: ") . $shareLink,
-        bold("Username: ") . decode($event['user_name']),
+        bold("Username: ") . username($event),
         bold("IP: ") . ip($event),
     ]));
 
@@ -52,7 +50,7 @@ function logWebhook($event)
             if (isset($event['link_title'])) {
                 file_log("WEBHOOK: LOGGING new link creation");
                 $linkContent = "A new link has been created: "
-                    . hyperlink(isset($event['link_title']) ? $event['link_title'] : "NO LINK TITLE", $shareLink);
+                    . hyperlink($event['link_title'] ?? "NO LINK TITLE", $shareLink);
                 // $is_video = $event['file_type'] == 1;
                 return [
                     "content" => $linkContent . n(1) . $event_data,
