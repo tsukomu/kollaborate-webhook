@@ -13,6 +13,7 @@ function decode($string): string
         $decoded = base64_decode(substr($string, 7));
         if ($decoded == false)
             return "";
+        $decoded = html_entity_decode($decoded);
         return $decoded;
     } else {
         return $string ?? "";
