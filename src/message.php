@@ -62,9 +62,8 @@ function commentEmbeds($event)
             "author" => [
                 "name" => "from " . username($event) . reply($event)
             ],
-            "description" => commentDescription($event),
-            "footer" => [
-                "text" => "Comment left at " . timecode($event) . " on " .  videoTitle($event)
+            "description" => [
+                "text" => "**at " . timecode($event) . "**\n" . commentDescription($event),
             ]
         ]
     ];
