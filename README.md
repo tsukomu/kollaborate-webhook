@@ -16,19 +16,21 @@ I have not tested if someone in the organization creates a webhook before the ow
 
 # Usage
 
-**Pre-requisites:**    
+## Pre-requisites
+
 - A web host where you can host PHP files
 - A discord server
 - 1 - 2 [Discord webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) URLs. 
 - A paid kollaborate.tv account
 
+## Installation
 
 1. Download the code through the green code button or the releases.
 2. Unzip the files to a folder such as `kollab webhook`.
 3. Copy `defaults.php` and name the copy `environment.php`.
 4. Open `environment.php` in a text or code editor.
 
-## Public vs private webhook
+### Public vs private webhook
 
 The public webhook is the one that posts kollab comments to discord.     
 **The private webhook is optional** and shows logs of who viewed the files, who commented, etc. It is spammy and should be sent somewhere private (like a different server) and muted until something untoward happens, at which point you can then search for the log of it.
@@ -46,7 +48,7 @@ In my event, the 3 links are `[Event videos] [Vid info sheet] [CW & VPR doc]`
 
 Don't change anything else unless you know what you're doing.
 
-## Upload the files to your web host.
+### Upload the files to your web host.
 
 Make a new folder on your domain (e.g. `kollab`) and upload these into it:    
 - `environment.php`
@@ -74,31 +76,31 @@ You can turn off signature checking in `environment.php` by changing `$kollabora
 
 If it is still erroring, Kollab probably changed something and you will need to update the PHP files to accommodate. Hope you started early! :')
 
-## Troubleshooting webhook issues
+### Troubleshooting webhook issues
 
-### Some comments are not being sent
+#### Some comments are not being sent
 
 Kollab sometimes does not send its header signature. Disable signature checking.    
 If it's currently disabled, enable it.
 
-### The link to the video sometimes goes to the folder instead
+#### The link to the video sometimes goes to the folder instead
 
 The link used in the discord message is the link the person who left the comment actually used.    
 If they used the folder link to get to the video, it is the folder link. If they used a direct share link to the video, that is what is used.
 
 If you need to guarantee a specific link, distribute your links more carefully or don't link back to the video in the discord message.
 
-### Markers/colors/annotations/replies aren't working properly
+#### Markers/colors/annotations/replies aren't working properly
 
 Kollaborate changed something and you will have to edit the PHP files.
 
-### The logging webhook is missing some information on some messages
+#### The logging webhook is missing some information on some messages
 
 The information given is different between logged in users and guests. Some information will be missed or different when the action performed is from a logged in user.    
 For this event, we are assuming you only have one user and that user is the event coordinator.     
 A user is someone with a kollaborate account that is logged into the project. Everyone else is a guest.
 
-### It is posting comments from other events/projects
+#### It is posting comments from other events/projects
 
 The kollaborate webhook captures all comments across all files connected to your kollaborate account. If you need to separate based on project, you will have to edit your PHP file(s) to filter for that specific project only.     
 Alternatively, only host one event at a time.
