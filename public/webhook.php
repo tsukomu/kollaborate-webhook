@@ -47,7 +47,7 @@ file_log("WEBHOOK: RAW REQUEST" . $message, 2);
  * nature of the internet. Only requests that have been
  * signed with this header can be trusted.
  */
-if ($kollaborate_has_fixed_their_shit) {
+if ($kollaborate_has_fixed_their_sig) {
     // Get request headers
     $headers = apache_request_headers();
     file_log("WEBHOOK: REQUEST HEADERS", 2);

@@ -17,7 +17,7 @@ $secret_key = "";
  * to send the header in all requests, even though their docs say
  * they will always send it.
  */
-$kollaborate_has_fixed_their_shit = false;
+$kollaborate_has_fixed_their_sig = false;
 
 // General settings
 $comment_max_length = 2048;
