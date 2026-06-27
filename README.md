@@ -77,6 +77,12 @@ In Kollab, your "Endpoint URL" is `https://yourdomain.com/yourfolder/public/webh
 - If it still errors, make sure your script is verifying Kollab's signature. If it currently is, stop. For some reason, Kollab does not actually attach its signature with every message. I've tried talking to Kollab support about this, but they can't seem to replicate the issue. You can turn off signature checking in `environment.php` by changing `$kollaborate_has_fixed_their_sig = true;` to `$kollaborate_has_fixed_their_sig = false;`
 - If it is still erroring, Kollab probably changed something and you will need to update the PHP files to accommodate. Hope you started early! :')
 
+# Security implications
+
+Since you will most likely have to disable Kollaborate signature checking, anyone who knows the path of your webhook is able to impersonate Kollaborate through it (eg. send messages as the webhook you set up in Discord). They can only really send messages that look like someone left a comment on a video, but they can say whatever and since it doesn't come from Kollaborate they can also fake the IP and their username.
+
+If this is an issue (like in the case someone in your community abuses it), you should rename the webhook path or folder to a long, random generated string of characters. This makes the path act as a password. You will have to update your Kollaborate webhook settings and point it to the new path.
+
 # Self hosting
 
 Requirements:
