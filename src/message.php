@@ -77,7 +77,7 @@ function commentEmbeds($event)
             "author" => [
                 "name" => "from " . username($event) . reply($event)
             ],
-            "description" => "**at " . timecode($event) . "**\n" . commentDescription($event),
+            "description" => "-# at " . timecode($event) . "\n" . commentDescription($event),
         ]
     ];
 }
