@@ -9,14 +9,14 @@ function color($event)
 {
     switch ($event['type']) {
         case 'file-upload':
-            return 16711680; // bright red for file uploads
+            return 16318483; // bright red for file uploads
         case 'comment-new':
             if (!isset($event['color_id']) || !$event['color_id']) {
-                return 8421504; // gray for comments with no color set
+                return 16777215; // gray for comments with no color set
             }
             $id = $event['color_id'];
             $colors = [
-                8421504,    // 0 - no color or grey
+                16777215,    // 0 - no color or grey
                 8388608,    // 1 - red
                 14671616,   // 2 - yellow
                 16744192,   // 3 - orange
@@ -25,14 +25,29 @@ function color($event)
                 3200456,    // 6 - turquoise
                 16746653,   // 7 - pink
                 8388736,    // 8 - purple
-                16777215,   // 9 - white
-                0           // 10 - black
+                15921906,   // 9 - white
+                3026478     // 10 - black
             ];
             if (!isset($colors[$id]))
                 return $colors[0];
             return $colors[$id];
         default:
-            return 12945685; // gold for non-comments
+            return 16766771; // gold for non-comments
+    }
+}
+
+// emoji prefixes for help with logging
+function eventEmoji($event)
+{
+    switch (eventType($event)) {
+        case 'file-upload':
+            return '📥';
+        case 'comment-new':
+            return '💬';
+        case 'file-view':
+            return '👁️';
+        default:
+            return '';
     }
 }
 
@@ -62,9 +77,7 @@ function commentEmbeds($event)
             "author" => [
                 "name" => "from " . username($event) . reply($event)
             ],
-            "description" => [
-                "text" => "**at " . timecode($event) . "**\n" . commentDescription($event),
-            ]
+            "description" => "**at " . timecode($event) . "**\n" . commentDescription($event),
         ]
     ];
 }
@@ -76,6 +89,7 @@ function fileViewEmbeds($event)
     return [
         [
             "timestamp" => $timestamp,
+            "color" => color($event),
             "author" => [
                 "name" => username($event)
             ],
