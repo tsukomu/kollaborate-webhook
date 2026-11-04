@@ -16,7 +16,7 @@ function logWebhook($event)
 
     // Build the log data
     $event_data = implode(n(1), array_filter([
-        h(2, hyperlink(videoTitle($event), $vidlink)),
+        h(2, trim(eventEmoji($event) . "  " . hyperlink(videoTitle($event), $vidlink))),
         bold("Event type: ") . eventType($event, "N/A"),
         bold("Parent path: ") . parentPath($event, "N/A"),
         bold("Share link: ") . $shareLink,
